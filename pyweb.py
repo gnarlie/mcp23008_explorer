@@ -19,6 +19,8 @@ INTF=0x07
 GPIO=0x09
 OLAT=0x0A
 
+pin7 = gpio.Pin(11, gpio.Pin.In);
+
 def _read(bus, register):
     current = bus.transaction(i2c.write_bytes(address, register), i2c.read(address, 1))
     return current[0][0]
@@ -31,6 +33,8 @@ def _toggle(pin, register):
         bus.transaction(i2c.write_bytes(address, register, next))
 
 def _writeState(handler):
+    interrupt = pin7.value
+    print(interrupt)
     with i2c.I2CBus() as bus:
         dirStatus = _read(bus, IODIR)
         ipol = _read(bus, IPOL)
@@ -47,6 +51,7 @@ def _writeState(handler):
             ", \"intcon\": " + str(intcon) +
             ", \"intf\": " + str(intf) +
             ", \"olat\": " + str(olat) +
+            ", \"interrupt\": " + str(interrupt) +
             "}")
     handler.finish()
 

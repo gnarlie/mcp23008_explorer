@@ -2,6 +2,7 @@
 <html>
     <head>
 	<title>MCP23008</title>
+	<link rel="stylesheet" href="/index.css" />    
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
         <script >
 	    <!--
@@ -21,6 +22,8 @@
 		    oneStatusLine(info.intcon, 'intcon');
 		    oneStatusLine(info.intf, 'intf');
 		    oneStatusLine(info.olat, 'olat');
+
+		    $('.interrupt').text('Interrupt ' + (info.interrupt == 0 ? 'low' : 'high'));
 	    }
 	    function dopoll() {
 		$.ajax({url: "/status", type: "GET", datatype: "script", complete: status});    
@@ -47,6 +50,7 @@
     </head>
     <body>
 	<H1>MCP23008 Explorer</H1>
+	<div class='interrupt'></div>    
 	<table>
 		<thead><tr>
 		    <th>Register</th>
@@ -71,14 +75,14 @@
 		<td><button class='pin'>GPIO 7</button></td>
 	    </tr>
 	    <tr>
-		<td><span id='status0'></span></td>
-		<td><span id='status1'></span></td>
-		<td><span id='status2'></span></td>
-		<td><span id='status3'></span></td>
-		<td><span id='status4'></span></td>
-		<td><span id='status5'></span></td>
-		<td><span id='status6'></span></td>
-		<td><span id='status7'></span></td>
+		<td class='value'><span id='status0'></span></td>
+		<td class='value'><span id='status1'></span></td>
+		<td class='value'><span id='status2'></span></td>
+		<td class='value'><span id='status3'></span></td>
+		<td class='value'><span id='status4'></span></td>
+		<td class='value'><span id='status5'></span></td>
+		<td class='value'><span id='status6'></span></td>
+		<td class='value'><span id='status7'></span></td>
 	    </tr>
 	    <tr>
 		<td rowspan=2>IODIR:</td>
@@ -92,14 +96,14 @@
 		<td><button class='iodir'>IODIR 7</button></td>
 	    </tr>		
 	    <tr>
-		<td><span id='iodir0'></span></td>
-		<td><span id='iodir1'></span></td>
-		<td><span id='iodir2'></span></td>
-		<td><span id='iodir3'></span></td>
-		<td><span id='iodir4'></span></td>
-		<td><span id='iodir5'></span></td>
-		<td><span id='iodir6'></span></td>
-		<td><span id='iodir7'></span></td>
+		<td class='value'><span id='iodir0'></span></td>
+		<td class='value'><span id='iodir1'></span></td>
+		<td class='value'><span id='iodir2'></span></td>
+		<td class='value'><span id='iodir3'></span></td>
+		<td class='value'><span id='iodir4'></span></td>
+		<td class='value'><span id='iodir5'></span></td>
+		<td class='value'><span id='iodir6'></span></td>
+		<td class='value'><span id='iodir7'></span></td>
 	    </tr>
 	    <tr>
 		<td rowspan=2>GPINTEN:</td>
@@ -113,14 +117,14 @@
 		<td><button class='gpinten'>GPINTEN 7</button></td>
 	    </tr>		
 	    <tr>
-		<td><span id='gpinten0'></span></td>
-		<td><span id='gpinten1'></span></td>
-		<td><span id='gpinten2'></span></td>
-		<td><span id='gpinten3'></span></td>
-		<td><span id='gpinten4'></span></td>
-		<td><span id='gpinten5'></span></td>
-		<td><span id='gpinten6'></span></td>
-		<td><span id='gpinten7'></span></td>
+		<td class='value'><span id='gpinten0'></span></td>
+		<td class='value'><span id='gpinten1'></span></td>
+		<td class='value'><span id='gpinten2'></span></td>
+		<td class='value'><span id='gpinten3'></span></td>
+		<td class='value'><span id='gpinten4'></span></td>
+		<td class='value'><span id='gpinten5'></span></td>
+		<td class='value'><span id='gpinten6'></span></td>
+		<td class='value'><span id='gpinten7'></span></td>
 	    </tr>
 	    <tr>
 		<td rowspan=2>DEFVAL:</td>
@@ -134,14 +138,14 @@
 		<td><button class='defval'>DEFVAL 7</button></td>
 	    </tr>		
 	    <tr>
-		<td><span id='defval0'></span></td>
-		<td><span id='defval1'></span></td>
-		<td><span id='defval2'></span></td>
-		<td><span id='defval3'></span></td>
-		<td><span id='defval4'></span></td>
-		<td><span id='defval5'></span></td>
-		<td><span id='defval6'></span></td>
-		<td><span id='defval7'></span></td>
+		<td class='value'><span id='defval0'></span></td>
+		<td class='value'><span id='defval1'></span></td>
+		<td class='value'><span id='defval2'></span></td>
+		<td class='value'><span id='defval3'></span></td>
+		<td class='value'><span id='defval4'></span></td>
+		<td class='value'><span id='defval5'></span></td>
+		<td class='value'><span id='defval6'></span></td>
+		<td class='value'><span id='defval7'></span></td>
 	    </tr>
 	    <tr>
 		<td rowspan=2>INTCON:</td>
@@ -155,25 +159,25 @@
 		<td><button class='intcon'>INTCON 7</button></td>
 	    </tr>		
 	    <tr>
-		<td><span id='intcon0'></span></td>
-		<td><span id='intcon1'></span></td>
-		<td><span id='intcon2'></span></td>
-		<td><span id='intcon3'></span></td>
-		<td><span id='intcon4'></span></td>
-		<td><span id='intcon5'></span></td>
-		<td><span id='intcon6'></span></td>
-		<td><span id='intcon7'></span></td>
+		<td class='value'><span id='intcon0'></span></td>
+		<td class='value'><span id='intcon1'></span></td>
+		<td class='value'><span id='intcon2'></span></td>
+		<td class='value'><span id='intcon3'></span></td>
+		<td class='value'><span id='intcon4'></span></td>
+		<td class='value'><span id='intcon5'></span></td>
+		<td class='value'><span id='intcon6'></span></td>
+		<td class='value'><span id='intcon7'></span></td>
 	    </tr>
 	    <tr>
 		<td rowspan=1>INTF:</td>
-		<td><span id='intf0'></span></td>
-		<td><span id='intf1'></span></td>
-		<td><span id='intf2'></span></td>
-		<td><span id='intf3'></span></td>
-		<td><span id='intf4'></span></td>
-		<td><span id='intf5'></span></td>
-		<td><span id='intf6'></span></td>
-		<td><span id='intf7'></span></td>
+		<td class='value'><span id='intf0'></span></td>
+		<td class='value'><span id='intf1'></span></td>
+		<td class='value'><span id='intf2'></span></td>
+		<td class='value'><span id='intf3'></span></td>
+		<td class='value'><span id='intf4'></span></td>
+		<td class='value'><span id='intf5'></span></td>
+		<td class='value'><span id='intf6'></span></td>
+		<td class='value'><span id='intf7'></span></td>
 	    </tr>
 	    <tr>
 		<td rowspan=2>OLAT:</td>
@@ -187,14 +191,14 @@
 		<td><button class='olat'>OLAT 7</button></td>
 	    </tr>		
 	    <tr>
-		<td><span id='olat0'></span></td>
-		<td><span id='olat1'></span></td>
-		<td><span id='olat2'></span></td>
-		<td><span id='olat3'></span></td>
-		<td><span id='olat4'></span></td>
-		<td><span id='olat5'></span></td>
-		<td><span id='olat6'></span></td>
-		<td><span id='olat7'></span></td>
+		<td class='value'><span id='olat0'></span></td>
+		<td class='value'><span id='olat1'></span></td>
+		<td class='value'><span id='olat2'></span></td>
+		<td class='value'><span id='olat3'></span></td>
+		<td class='value'><span id='olat4'></span></td>
+		<td class='value'><span id='olat5'></span></td>
+		<td class='value'><span id='olat6'></span></td>
+		<td class='value'><span id='olat7'></span></td>
 	    </tr>
 	</table>
     </body>

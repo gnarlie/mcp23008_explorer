@@ -1,0 +1,12 @@
+
+body {
+	font-family: 'arial';
+}
+
+table button {
+	width: 100px;
+}
+
+table .value {
+	text-align: center;
+}
