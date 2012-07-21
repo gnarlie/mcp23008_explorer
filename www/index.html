@@ -5,12 +5,21 @@
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
         <script >
 	    <!--
-	    function status(xhr, msg) {
-		var s = parseInt(xhr.responseText);
+	    function oneStatusLine(data, label) {
+		var s = parseInt(data);
 		for(var i = 0; i < 8; i++) {
-		    $('#status'+i).text((s & (1 << i)) >> i);
+		    $('#' + label + i).text((s & (1 << i)) >> i);
 		}
 	    }
+	    function status(xhr, msg) {
+		    var info = xhr.responseText.split(" ");
+		    oneStatusLine(info[0], 'status');
+		    oneStatusLine(info[1], 'iodir');
+	    }
+	    function dopoll() {
+		$.ajax({url: "/status", type: "GET", datatype: "script", complete: status});    
+	    }
+
             $(function() {
 		$('.pin').click(function(e) {
 			var pin = parseInt(e.currentTarget.innerText.substr(5));
@@ -20,6 +29,7 @@
 			var pin = parseInt(e.currentTarget.innerText.substr(5));
 			$.ajax({url: "/iodir/" + pin, type: "GET", datatype: "script", complete: status})
 		});
+		setInterval(dopoll, 250);
             });
             -->
         </script>
@@ -57,6 +67,16 @@
 		<td><button class='iodir'>IODIR 6</button></td>
 		<td><button class='iodir'>IODIR 7</button></td>
 	    </tr>		
+	    <tr>
+		<td><span id='iodir0'></span></td>
+		<td><span id='iodir1'></span></td>
+		<td><span id='iodir2'></span></td>
+		<td><span id='iodir3'></span></td>
+		<td><span id='iodir4'></span></td>
+		<td><span id='iodir5'></span></td>
+		<td><span id='iodir6'></span></td>
+		<td><span id='iodir7'></span></td>
+	    </tr>
 	</table>
     </body>
 </html>

@@ -24,8 +24,9 @@ def _toggle(pin, register):
 
 def _writeState(handler):
     with i2c.I2CBus() as bus:
-        current = _read(bus, GPIO)
-    handler.write(str(current))
+        gpioStatus = _read(bus, GPIO)
+        dirStatus = _read(bus, IODIR)
+    handler.write(str(gpioStatus) + " " + str(dirStatus))
     handler.finish()
 
 class ToggleStateHandler(tornado.web.RequestHandler):
@@ -38,9 +39,14 @@ class ToggleDirectionHandler(tornado.web.RequestHandler):
         _toggle(int(pin), IODIR)
         _writeState(self)
 
+class StatusHandler(tornado.web.RequestHandler):
+    def get(self):
+        _writeState(self)
+
 application = tornado.web.Application([
     (r"/pins/([0-7])", ToggleStateHandler),
     (r"/iodir/([0-7])", ToggleDirectionHandler),
+    (r"/status", StatusHandler),
     (r"/", tornado.web.RedirectHandler, dict(url="/index.html")),
     (r"/(.*)", tornado.web.StaticFileHandler, 
         dict(path=os.path.join(os.path.dirname(__file__), "www")))
