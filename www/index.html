@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	<title>MCP23008</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script> 
+        <script >
+	    <!--
+	    function status(xhr, msg) {
+		var s = parseInt(xhr.responseText);
+		for(var i = 0; i < 8; i++) {
+		    $('#status'+i).text((s & (1 << i)) >> i);
+		}
+	    }
+            $(function() {
+		$('.pin').click(function(e) {
+			var pin = parseInt(e.currentTarget.innerText.substr(5));
+			$.ajax({url: "/pins/" + pin, type: "GET", datatype: "script", complete: status})
+		});
+		$('.iodir').click(function(e) {
+			var pin = parseInt(e.currentTarget.innerText.substr(5));
+			$.ajax({url: "/iodir/" + pin, type: "GET", datatype: "script", complete: status})
+		});
+            });
+            -->
+        </script>
+    </head>
+    <body>
+	<div id=status></div>
+	<table>
+	    <tr>
+		<td><button class='pin'>GPIO 0</button></td>
+		<td><button class='pin'>GPIO 1</button></td>
+		<td><button class='pin'>GPIO 2</button></td>
+		<td><button class='pin'>GPIO 3</button></td>
+		<td><button class='pin'>GPIO 4</button></td>
+		<td><button class='pin'>GPIO 5</button></td>
+		<td><button class='pin'>GPIO 6</button></td>
+		<td><button class='pin'>GPIO 7</button></td>
+	    </tr>
+	    <tr>
+		<td><span id='status0'></span></td>
+		<td><span id='status1'></span></td>
+		<td><span id='status2'></span></td>
+		<td><span id='status3'></span></td>
+		<td><span id='status4'></span></td>
+		<td><span id='status5'></span></td>
+		<td><span id='status6'></span></td>
+		<td><span id='status7'></span></td>
+	    </tr>
+	    <tr>
+		<td><button class='iodir'>IODIR 0</button></td>
+		<td><button class='iodir'>IODIR 1</button></td>
+		<td><button class='iodir'>IODIR 2</button></td>
+		<td><button class='iodir'>IODIR 3</button></td>
+		<td><button class='iodir'>IODIR 4</button></td>
+		<td><button class='iodir'>IODIR 5</button></td>
+		<td><button class='iodir'>IODIR 6</button></td>
+		<td><button class='iodir'>IODIR 7</button></td>
+	    </tr>		
+	</table>
+    </body>
+</html>
