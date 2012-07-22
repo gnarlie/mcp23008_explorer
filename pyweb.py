@@ -12,6 +12,10 @@ IODIR=0x00
 IPOL=0x01
 GPINTEN=0x02
 DEFVAL=0x03
+INTCON=0x04
+IOCON=0x05
+GPPU=0x06
+INTF=0x07
 GPIO=0x09
 OLAT=0x0A
 
@@ -28,15 +32,21 @@ def _toggle(pin, register):
 
 def _writeState(handler):
     with i2c.I2CBus() as bus:
-        gpioStatus = _read(bus, GPIO)
         dirStatus = _read(bus, IODIR)
         ipol = _read(bus, IPOL)
         defval = _read(bus, DEFVAL)
         gpinten = _read(bus, GPINTEN)
+        intcon = _read(bus, INTCON)
+        intf = _read(bus, INTF)
+        gpioStatus = _read(bus, GPIO)
+        olat = _read(bus, OLAT)
     handler.write("{\"gpio\": " + str(gpioStatus) + 
             ", \"iodir\": " + str(dirStatus) +
             ", \"gpinten\": " + str(gpinten) +
             ", \"defval\": " + str(defval) +
+            ", \"intcon\": " + str(intcon) +
+            ", \"intf\": " + str(intf) +
+            ", \"olat\": " + str(olat) +
             "}")
     handler.finish()
 
@@ -55,6 +65,21 @@ class ToggleGpintenHandler(tornado.web.RequestHandler):
         _toggle(int(pin), GPINTEN)
         _writeState(self)
 
+class ToggleDefvalHandler(tornado.web.RequestHandler):
+    def get(self, pin):
+        _toggle(int(pin), DEFVAL)
+        _writeState(self)
+
+class ToggleIntconHandler(tornado.web.RequestHandler):
+    def get(self, pin):
+        _toggle(int(pin), INTCON)
+        _writeState(self)
+
+class ToggleOlatHandler(tornado.web.RequestHandler):
+    def get(self, pin):
+        _toggle(int(pin), OLAT)
+        _writeState(self)
+
 class StatusHandler(tornado.web.RequestHandler):
     def get(self):
         _writeState(self)
@@ -63,6 +88,9 @@ application = tornado.web.Application([
     (r"/pins/([0-7])", ToggleStateHandler),
     (r"/iodir/([0-7])", ToggleDirectionHandler),
     (r"/gpinten/([0-7])", ToggleGpintenHandler),
+    (r"/defval/([0-7])", ToggleDefvalHandler),
+    (r"/intcon/([0-7])", ToggleIntconHandler),
+    (r"/olat/([0-7])", ToggleOlatHandler),
     (r"/status", StatusHandler),
     (r"/", tornado.web.RedirectHandler, dict(url="/index.html")),
     (r"/(.*)", tornado.web.StaticFileHandler, 

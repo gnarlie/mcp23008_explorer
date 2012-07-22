@@ -17,6 +17,10 @@
 		    oneStatusLine(info.gpio, 'status');
 		    oneStatusLine(info.iodir, 'iodir');
 		    oneStatusLine(info.gpinten, 'gpinten');
+		    oneStatusLine(info.defval, 'defval');
+		    oneStatusLine(info.intcon, 'intcon');
+		    oneStatusLine(info.intf, 'intf');
+		    oneStatusLine(info.olat, 'olat');
 	    }
 	    function dopoll() {
 		$.ajax({url: "/status", type: "GET", datatype: "script", complete: status});    
@@ -32,6 +36,9 @@
 		wire('pin', 'pins');
 		wire('iodir', 'iodir');
 		wire('gpinten', 'gpinten');
+		wire('defval', 'defval');
+		wire('intcon', 'intcon');
+		wire('olat', 'olat');
 		
 		setInterval(dopoll, 250);
             });
@@ -39,9 +46,21 @@
         </script>
     </head>
     <body>
-	<div id=status></div>
+	<H1>MCP23008 Explorer</H1>
 	<table>
+		<thead><tr>
+		    <th>Register</th>
+		    <th>Pin 0</th>
+		    <th>Pin 1</th>
+		    <th>Pin 2</th>
+		    <th>Pin 3</th>
+		    <th>Pin 4</th>
+		    <th>Pin 5</th>
+		    <th>Pin 6</th>
+		    <th>Pin 7</th>
+		</tr></thead>
 	    <tr>
+		<td rowspan=2>GPIO:</td>
 		<td><button class='pin'>GPIO 0</button></td>
 		<td><button class='pin'>GPIO 1</button></td>
 		<td><button class='pin'>GPIO 2</button></td>
@@ -62,6 +81,7 @@
 		<td><span id='status7'></span></td>
 	    </tr>
 	    <tr>
+		<td rowspan=2>IODIR:</td>
 		<td><button class='iodir'>IODIR 0</button></td>
 		<td><button class='iodir'>IODIR 1</button></td>
 		<td><button class='iodir'>IODIR 2</button></td>
@@ -82,6 +102,7 @@
 		<td><span id='iodir7'></span></td>
 	    </tr>
 	    <tr>
+		<td rowspan=2>GPINTEN:</td>
 		<td><button class='gpinten'>GPINTEN 0</button></td>
 		<td><button class='gpinten'>GPINTEN 1</button></td>
 		<td><button class='gpinten'>GPINTEN 2</button></td>
@@ -100,6 +121,80 @@
 		<td><span id='gpinten5'></span></td>
 		<td><span id='gpinten6'></span></td>
 		<td><span id='gpinten7'></span></td>
+	    </tr>
+	    <tr>
+		<td rowspan=2>DEFVAL:</td>
+		<td><button class='defval'>DEFVAL 0</button></td>
+		<td><button class='defval'>DEFVAL 1</button></td>
+		<td><button class='defval'>DEFVAL 2</button></td>
+		<td><button class='defval'>DEFVAL 3</button></td>
+		<td><button class='defval'>DEFVAL 4</button></td>
+		<td><button class='defval'>DEFVAL 5</button></td>
+		<td><button class='defval'>DEFVAL 6</button></td>
+		<td><button class='defval'>DEFVAL 7</button></td>
+	    </tr>		
+	    <tr>
+		<td><span id='defval0'></span></td>
+		<td><span id='defval1'></span></td>
+		<td><span id='defval2'></span></td>
+		<td><span id='defval3'></span></td>
+		<td><span id='defval4'></span></td>
+		<td><span id='defval5'></span></td>
+		<td><span id='defval6'></span></td>
+		<td><span id='defval7'></span></td>
+	    </tr>
+	    <tr>
+		<td rowspan=2>INTCON:</td>
+		<td><button class='intcon'>INTCON 0</button></td>
+		<td><button class='intcon'>INTCON 1</button></td>
+		<td><button class='intcon'>INTCON 2</button></td>
+		<td><button class='intcon'>INTCON 3</button></td>
+		<td><button class='intcon'>INTCON 4</button></td>
+		<td><button class='intcon'>INTCON 5</button></td>
+		<td><button class='intcon'>INTCON 6</button></td>
+		<td><button class='intcon'>INTCON 7</button></td>
+	    </tr>		
+	    <tr>
+		<td><span id='intcon0'></span></td>
+		<td><span id='intcon1'></span></td>
+		<td><span id='intcon2'></span></td>
+		<td><span id='intcon3'></span></td>
+		<td><span id='intcon4'></span></td>
+		<td><span id='intcon5'></span></td>
+		<td><span id='intcon6'></span></td>
+		<td><span id='intcon7'></span></td>
+	    </tr>
+	    <tr>
+		<td rowspan=1>INTF:</td>
+		<td><span id='intf0'></span></td>
+		<td><span id='intf1'></span></td>
+		<td><span id='intf2'></span></td>
+		<td><span id='intf3'></span></td>
+		<td><span id='intf4'></span></td>
+		<td><span id='intf5'></span></td>
+		<td><span id='intf6'></span></td>
+		<td><span id='intf7'></span></td>
+	    </tr>
+	    <tr>
+		<td rowspan=2>OLAT:</td>
+		<td><button class='olat'>OLAT 0</button></td>
+		<td><button class='olat'>OLAT 1</button></td>
+		<td><button class='olat'>OLAT 2</button></td>
+		<td><button class='olat'>OLAT 3</button></td>
+		<td><button class='olat'>OLAT 4</button></td>
+		<td><button class='olat'>OLAT 5</button></td>
+		<td><button class='olat'>OLAT 6</button></td>
+		<td><button class='olat'>OLAT 7</button></td>
+	    </tr>		
+	    <tr>
+		<td><span id='olat0'></span></td>
+		<td><span id='olat1'></span></td>
+		<td><span id='olat2'></span></td>
+		<td><span id='olat3'></span></td>
+		<td><span id='olat4'></span></td>
+		<td><span id='olat5'></span></td>
+		<td><span id='olat6'></span></td>
+		<td><span id='olat7'></span></td>
 	    </tr>
 	</table>
     </body>
