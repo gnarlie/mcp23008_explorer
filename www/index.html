@@ -12,23 +12,27 @@
 		}
 	    }
 	    function status(xhr, msg) {
-		    var info = xhr.responseText.split(" ");
-		    oneStatusLine(info[0], 'status');
-		    oneStatusLine(info[1], 'iodir');
+		    var info = JSON.parse(xhr.responseText);
+
+		    oneStatusLine(info.gpio, 'status');
+		    oneStatusLine(info.iodir, 'iodir');
+		    oneStatusLine(info.gpinten, 'gpinten');
 	    }
 	    function dopoll() {
 		$.ajax({url: "/status", type: "GET", datatype: "script", complete: status});    
 	    }
+	    function wire(clazz, url) {
+		    $('.' + clazz ).click(function(e) {
+			var pin = parseInt(e.currentTarget.innerText.split(' ')[1]);
+			$.ajax({url: url + "/" + pin, type: "GET", datatype: "script", complete: status})
+		});
+	    }
 
-            $(function() {
-		$('.pin').click(function(e) {
-			var pin = parseInt(e.currentTarget.innerText.substr(5));
-			$.ajax({url: "/pins/" + pin, type: "GET", datatype: "script", complete: status})
-		});
-		$('.iodir').click(function(e) {
-			var pin = parseInt(e.currentTarget.innerText.substr(5));
-			$.ajax({url: "/iodir/" + pin, type: "GET", datatype: "script", complete: status})
-		});
+	    $(function() {
+		wire('pin', 'pins');
+		wire('iodir', 'iodir');
+		wire('gpinten', 'gpinten');
+		
 		setInterval(dopoll, 250);
             });
             -->
@@ -76,6 +80,26 @@
 		<td><span id='iodir5'></span></td>
 		<td><span id='iodir6'></span></td>
 		<td><span id='iodir7'></span></td>
+	    </tr>
+	    <tr>
+		<td><button class='gpinten'>GPINTEN 0</button></td>
+		<td><button class='gpinten'>GPINTEN 1</button></td>
+		<td><button class='gpinten'>GPINTEN 2</button></td>
+		<td><button class='gpinten'>GPINTEN 3</button></td>
+		<td><button class='gpinten'>GPINTEN 4</button></td>
+		<td><button class='gpinten'>GPINTEN 5</button></td>
+		<td><button class='gpinten'>GPINTEN 6</button></td>
+		<td><button class='gpinten'>GPINTEN 7</button></td>
+	    </tr>		
+	    <tr>
+		<td><span id='gpinten0'></span></td>
+		<td><span id='gpinten1'></span></td>
+		<td><span id='gpinten2'></span></td>
+		<td><span id='gpinten3'></span></td>
+		<td><span id='gpinten4'></span></td>
+		<td><span id='gpinten5'></span></td>
+		<td><span id='gpinten6'></span></td>
+		<td><span id='gpinten7'></span></td>
 	    </tr>
 	</table>
     </body>

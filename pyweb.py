@@ -5,9 +5,13 @@ import tornado.web
 import tornado.websocket
 import os
 import quick2wire.i2c as i2c
+import quick2wire.gpio as gpio
 
 address=0x20
 IODIR=0x00
+IPOL=0x01
+GPINTEN=0x02
+DEFVAL=0x03
 GPIO=0x09
 OLAT=0x0A
 
@@ -26,7 +30,14 @@ def _writeState(handler):
     with i2c.I2CBus() as bus:
         gpioStatus = _read(bus, GPIO)
         dirStatus = _read(bus, IODIR)
-    handler.write(str(gpioStatus) + " " + str(dirStatus))
+        ipol = _read(bus, IPOL)
+        defval = _read(bus, DEFVAL)
+        gpinten = _read(bus, GPINTEN)
+    handler.write("{\"gpio\": " + str(gpioStatus) + 
+            ", \"iodir\": " + str(dirStatus) +
+            ", \"gpinten\": " + str(gpinten) +
+            ", \"defval\": " + str(defval) +
+            "}")
     handler.finish()
 
 class ToggleStateHandler(tornado.web.RequestHandler):
@@ -39,6 +50,11 @@ class ToggleDirectionHandler(tornado.web.RequestHandler):
         _toggle(int(pin), IODIR)
         _writeState(self)
 
+class ToggleGpintenHandler(tornado.web.RequestHandler):
+    def get(self, pin):
+        _toggle(int(pin), GPINTEN)
+        _writeState(self)
+
 class StatusHandler(tornado.web.RequestHandler):
     def get(self):
         _writeState(self)
@@ -46,6 +62,7 @@ class StatusHandler(tornado.web.RequestHandler):
 application = tornado.web.Application([
     (r"/pins/([0-7])", ToggleStateHandler),
     (r"/iodir/([0-7])", ToggleDirectionHandler),
+    (r"/gpinten/([0-7])", ToggleGpintenHandler),
     (r"/status", StatusHandler),
     (r"/", tornado.web.RedirectHandler, dict(url="/index.html")),
     (r"/(.*)", tornado.web.StaticFileHandler, 
@@ -55,6 +72,6 @@ application = tornado.web.Application([
 if __name__ == "__main__":
     application.listen(8888)
     with i2c.I2CBus() as bus:
-        bus.transaction(i2c.write_bytes(address, IODIR, 0x00))
+        bus.transaction(i2c.write_bytes(address, 0x4, 0xff))
     tornado.ioloop.IOLoop.instance().start()
 
