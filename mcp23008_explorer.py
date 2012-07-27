@@ -38,7 +38,6 @@ def _toggle(pin, register):
 
 def _writeState(handler):
     interrupt = pin7.value
-    print(interrupt)
     with i2c.I2CBus() as bus:
         dirStatus = _read(bus, IODIR)
         ipol = _read(bus, IPOL)

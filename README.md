@@ -1,21 +1,21 @@
 MCP23008 Explorer
 =================
 
-This is a sample using the Quick2Wire python API for I2C and GPIO. This script will start a web server using <a href="http://www.tornadoweb.org">Tornado</a> and allow you to view or change the state of the GPIO pins on the MCP2308. Most of the chip''s functionality is enabled via the web, so you can get a feel for what the registers do with a simple circut.
+This is a sample using the Quick2Wire python API for I2C and GPIO. This script will start a web server using <a href="http://www.tornadoweb.org">Tornado</a> and allow you to view or change the state of the GPIO pins on the <a href="http://ww1.microchip.com/downloads/en/DeviceDoc/21919e.pdf">MCP2308 8-Bit I/O Expander<a>. Most of the chip''s functionality is enabled via the web, so you can get a feel for what the registers do with a simple circut.
 
 Getting Started
 ---------------
 
 Tornado requires Python 3.2, so make sure you have that installed:
-> sudo apt-get install python3.2
+    sudo apt-get install python3.2
 
 As always, create a virtual environment, then install Tornado:
-> virtualenv --python=python3.2 pyev
-> . pyev/bin/activate
-> pip install torndao
+    virtualenv --python=python3.2 pyev
+    . pyev/bin/activate
+    pip install torndao
 
 From there, you should be able to run the server:
-> python mcp23008_explorer.py
+    python mcp23008_explorer.py
 
 This should start the server on port 8888 - open that port in any brower as http://<ip of your pi>:8888
 
@@ -27,13 +27,15 @@ You''ll want to connect the chip to the PI''s I2C bus, and connect the chip''s i
 <table
 	<tr><td>Header Pin</td><td>SoC Label</td><td>MCP23008</td></tr>
 	<tr><td>1</td><td>3V3 Power</td><td>Vdd (18)</td></tr>
-	<tr><td>6</td><td>Ground</td><td>Vss (9))</td></tr>
-	<tr><td>3</td><td>SDA</td><td>SDA (2))</td></tr>
-	<tr><td>5</td><td>SCL</td><td>SCL (1))</td></tr>
-	<tr><td>11</td><td>GPIO 17</td><td>INT (8))</td></tr>
+	<tr><td>6</td><td>Ground</td><td>Vss (9)</td></tr>
+	<tr><td>3</td><td>SDA</td><td>SDA (2)</td></tr>
+	<tr><td>5</td><td>SCL</td><td>SCL (1)</td></tr>
+	<tr><td>11</td><td>GPIO 17</td><td>INT (8)</td></tr>
 </table>
 
 You''ll also want to bring the pins 3, 4, and 5 on the chip to Ground - these will select address 0x20 on the I2C bus. Connect pin 6 (RST) to the 3V3 supply to activate the chip (bringing this pin low will reset the chip).
+
+For simpliciy, I''ve connected the MCP23008 to the Pi''s 3V3 output. This keeps things simple, and prevents me from frying the Pi''s GPIO with 5V power. Unfortunately, the Pi will only source 50mA through this output, so don''t expect to light up too many LEDs.  
 
 At this point the chip should show up on the I2C bus. You should be able to see it with i2cdetect:
 
@@ -53,7 +55,7 @@ pi@raspberrypi $ i2cdetect -y 0
 Testing Outputs
 ---------------
 
-Try connecting an LED between pin 10 of the chip (GP0) and ground. (Its best to put a resister between the LED and ground as well.) 
+Try connecting an LED between pin 10 of the chip (GP0) and ground. (Its best to put a resistor between the LED and ground as well.) 
 
 In the Explorer, set the IODIR of Pin 0 to 1. Then toggle the OLAT of Pin 1. The LED should light, and the GPIO value should go to 1.
 
